@@ -46,7 +46,12 @@ class Fulfillment {
   }
 
   getMessageResponse() {
-    return this._messages[0]["speech"];
+    return {
+      "reply": this._messages[0]["speech"],
+      "smart_reply": this._messages[0],
+      "allreply": this._messages
+    };
+    ;
   }
 
   getSpeechResponse() {
@@ -271,9 +276,10 @@ class Dialogflow {
   Future<AIResponse> sendQuery(query) async {
     var response = await http.get(
       _getUrl(query),
-      headers: {HttpHeaders.authorizationHeader: "Bearer " + token},
+      headers: {HttpHeaders.AUTHORIZATION: "Bearer " + token},
     );
     Map data = json.decode(response.body);
+    print(data);
     AIResponse aiResponse = new AIResponse(data);
     return aiResponse;
   }
